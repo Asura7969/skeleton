@@ -17,7 +17,13 @@ public enum ResultCode {
 
     /* 用户错误：20001-29999*/
     USER_HAS_EXISTED(20001, "用户名已存在"),
-    USER_NOT_FIND(20002, "用户名不存在");
+    USER_NOT_FIND(20002, "用户名不存在"),
+
+    /* 文件模块 3xxxx */
+    FILE_EMPTY(30001,"文件不能空"),
+    FILE_NAME_EMPTY(30002,"文件名称不能为空"),
+    FILE_MAX_SIZE(30003,"文件大小超出");
+
     private Integer code;
 
     private String message;

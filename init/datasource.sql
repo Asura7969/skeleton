@@ -37,3 +37,12 @@ INSERT INTO event_info (id, event_name, event_type, create_time) VALUES
 (3, '事件-3', 2, '2021-01-22 09:48:00'),
 (4, '事件-4', 2, '2021-02-22 09:48:00'),
 (5, '事件-5', 3, '2021-02-22 09:48:00');
+
+
+CREATE TABLE `file` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`filePath` varchar(255) DEFAULT NULL,
+`fileName` varchar(255) DEFAULT NULL,
+`fileSuffix` varchar(255) DEFAULT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
