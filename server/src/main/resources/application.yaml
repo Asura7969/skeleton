@@ -5,7 +5,7 @@ logging:
   level:
     root: info
   file:
-    path: ./log/
+    path: ../log/
 #  application:
 #    name: skeleton
 #  datasource:
@@ -29,3 +29,17 @@ spring:
   profiles:
     active: dev
 
+
+management: #开启监控管理，优雅停机
+  server:
+    ssl:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true #启用shutdown端点
