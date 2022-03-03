@@ -4,8 +4,8 @@ server:
 logging:
   level:
     root: info
-
-#spring:
+  file:
+    path: ./log/
 #  application:
 #    name: skeleton
 #  datasource:
@@ -21,3 +21,11 @@ mybatis-plus:
 # 自定义变量
 file:
   path: E:/temp/files
+
+
+spring:
+  application:
+    name: skeleton
+  profiles:
+    active: dev
+

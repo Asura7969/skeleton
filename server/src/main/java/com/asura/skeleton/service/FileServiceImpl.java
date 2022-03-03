@@ -3,9 +3,11 @@ package com.asura.skeleton.service;
 import com.asura.common.domain.Result;
 import com.asura.common.domain.ResultCode;
 import com.asura.dao.datasource.first.dto.FileDTO;
+import com.asura.dao.datasource.first.mapper.FileMapper;
 import com.asura.skeleton.service.impl.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +28,10 @@ public class FileServiceImpl implements FileService {
     private String savePath;
     // 2M
     private static final Integer FILE_MAX_SIZE = 1024 * 1024 * 2;
+
+    @Autowired
+    private FileMapper fileMapper;
+
     @Override
     public FileDTO getFileById(String id) {
         return null;
@@ -57,7 +63,7 @@ public class FileServiceImpl implements FileService {
         }
         //将这些文件的信息写入到数据库中
         FileDTO fileDTO = new FileDTO(newFile.getPath(), fileName, suffixName);
-        // fileMapper.insertFile(files);
+        fileMapper.insertFile(fileDTO);
         return new Result<>(ResultCode.SUCCESS.code(),ResultCode.SUCCESS.message(),true);
     }
 }
