@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -23,6 +24,11 @@ import javax.sql.DataSource;
         basePackages = "com.asura.dao.datasource.second.mapper",
         sqlSessionFactoryRef = "secondSqlSessionFactory")
 public class SecondDataSourceConfig {
+
+    @Bean(name = "transactionManager2")
+    public DataSourceTransactionManager transactionManager(@Qualifier("secondDataSource") DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
 
     @Bean("secondSqlSessionTemplate")
     public SqlSessionTemplate secondSqlSessionTemplate(

@@ -30,7 +30,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         HttpServletRequest request = sra.getRequest();
         // 判断请求是否有包装标记
         ResponseResult responseResultAnn = (ResponseResult) request.getAttribute(RESPONSE_RESULT_ANN);
-        return responseResultAnn == null ? false : true;
+        return responseResultAnn != null;
     }
 
     @Override
