@@ -65,6 +65,11 @@ spring:
   profiles:
     active: dev
 
+elasticsearch:
+  host: 8.131.66.135
+  port: 9200
+  user: elastic
+  pwd: 123456
 
 management: #开启监控管理，优雅停机
   server:
