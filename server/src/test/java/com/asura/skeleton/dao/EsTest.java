@@ -7,6 +7,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.junit.runner.RunWith;
@@ -28,6 +29,8 @@ import java.util.List;
 public class EsTest  extends AbstractJUnit4SpringContextTests {
 
     // https://wylong.top/Elasticsearch/13-Springboot%E9%9B%86%E6%88%90ES.html#%E6%90%9C%E7%B4%A2%E5%8C%B9%E9%85%8D%E7%9A%84%E3%80%81term%E6%9F%A5%E8%AF%A2%E3%80%81%E5%89%8D%E7%BC%80%E6%9F%A5%E8%AF%A2
+
+    // https://www.jianshu.com/p/ef2ea585ea10
     // 索引
     private static final String NBA_INDEX = "nba";
     // 查询数据起始值
@@ -37,6 +40,11 @@ public class EsTest  extends AbstractJUnit4SpringContextTests {
 
     @Resource
     private RestHighLevelClient client;
+
+
+    private void buildQuery() {
+        QueryBuilder query = QueryBuilders.termQuery("", "");
+    }
 
     private List<Item> commonSearch(QueryBuilder query) throws IOException {
         SearchRequest searchRequest = new SearchRequest(NBA_INDEX);
