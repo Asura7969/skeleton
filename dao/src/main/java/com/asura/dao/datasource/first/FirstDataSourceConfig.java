@@ -51,7 +51,7 @@ public class FirstDataSourceConfig {
         sqlSessionFactoryBean.setConfiguration(configuration);
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver()
-                .getResources("classpath:odps/mapper/*Mapper*.xml"));
+                .getResources("classpath:mapper/*Mapper*.xml"));
         return sqlSessionFactoryBean.getObject();
     }
 
