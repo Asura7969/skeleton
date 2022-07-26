@@ -104,6 +104,6 @@ public class ReplicatedCache {
     }
 
     private Key<LWWMap<String, String>> dataKey(String entryKey) {
-        return LWWMapKey.create("cache-" + entryKey);
+        return LWWMapKey.create("cache-" + Math.abs(entryKey.hashCode() % 100));
     }
 }
