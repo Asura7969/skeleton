@@ -35,7 +35,7 @@ elasticsearch:
   user: elastic
   pwd: 123456
 
-management:
+management: #开启监控管理，优雅停机
   server:
     ssl:
       enabled: false
@@ -52,4 +52,4 @@ management:
 myAkka:
   name: akka-spring-skeleton
   remote_port: 2551
-  seed_nodes: [127.0.0.1:2551, 127.0.0.1:2552]
+  seed_nodes: [127.0.0.1]

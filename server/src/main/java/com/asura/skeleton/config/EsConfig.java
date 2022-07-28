@@ -26,25 +26,25 @@ public class EsConfig {
     private String user;
     private String pwd;
 
-    @Bean(destroyMethod = "close")
-    public RestHighLevelClient client() {
-
-        HttpHost httpHost = new HttpHost(host, port, "http");
-
-        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(user, pwd));
-
-        RestClientBuilder builder = RestClient.builder(httpHost).setRequestConfigCallback(requestConfigBuilder -> {
-            requestConfigBuilder.setConnectTimeout(-1);
-            requestConfigBuilder.setSocketTimeout(-1);
-            requestConfigBuilder.setConnectionRequestTimeout(-1);
-            return requestConfigBuilder;
-        }).setHttpClientConfigCallback(httpClientBuilder -> {
-            httpClientBuilder.disableAuthCaching();
-            return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
-        });
-
-        return new RestHighLevelClient(builder);
-
-    }
+//    @Bean(destroyMethod = "close")
+//    public RestHighLevelClient client() {
+//
+//        HttpHost httpHost = new HttpHost(host, port, "http");
+//
+//        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+//        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(user, pwd));
+//
+//        RestClientBuilder builder = RestClient.builder(httpHost).setRequestConfigCallback(requestConfigBuilder -> {
+//            requestConfigBuilder.setConnectTimeout(-1);
+//            requestConfigBuilder.setSocketTimeout(-1);
+//            requestConfigBuilder.setConnectionRequestTimeout(-1);
+//            return requestConfigBuilder;
+//        }).setHttpClientConfigCallback(httpClientBuilder -> {
+//            httpClientBuilder.disableAuthCaching();
+//            return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+//        });
+//
+//        return new RestHighLevelClient(builder);
+//
+//    }
 }

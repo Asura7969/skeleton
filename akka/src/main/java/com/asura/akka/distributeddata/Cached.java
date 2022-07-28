@@ -1,5 +1,8 @@
 package com.asura.akka.distributeddata;
 
+import akka.actor.typed.Behavior;
+import akka.actor.typed.javadsl.Behaviors;
+
 import java.util.Optional;
 
 /**
@@ -49,5 +52,16 @@ public class Cached {
     @Override
     public String toString() {
         return "Cached [key=" + key + ", value=" + value + "]";
+    }
+
+
+    public static Behavior<Cached> createBehavior() {
+        return Behaviors
+                .receive(Cached.class)
+                .onMessage(Cached.class, c -> {
+                    System.out.println(c.key + " : " + c.value.get());
+                    return Behaviors.same();
+                })
+                .build();
     }
 }
