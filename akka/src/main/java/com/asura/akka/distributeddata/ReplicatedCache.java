@@ -48,7 +48,7 @@ public class ReplicatedCache {
                 .receive(Command.class)
                 .onMessage(PutInCache.class, cmd -> receivePutInCache(cmd.key, cmd.value))
                 .onMessage(Evict.class, cmd -> receiveEvict(cmd.key))
-                .onMessage(GetFromCache.class, cmd -> receiveGetFromCache(cmd.key, cmd.replyTo))
+                .onMessage(GetFromCache.class, cmd -> receiveGetFromCache(cmd.key, cmd.replyTo, cmd.uuid))
                 .onMessage(InternalGetResponse.class, this::onInternalGetResponse)
                 .onMessage(InternalUpdateResponse.class, notUsed -> Behaviors.same())
                 .build();
@@ -84,10 +84,10 @@ public class ReplicatedCache {
         return Behaviors.same();
     }
 
-    private Behavior<Command> receiveGetFromCache(String key, ActorRef<Cached> replyTo) {
+    private Behavior<Command> receiveGetFromCache(String key, ActorRef<Cached> replyTo, String uuid) {
         replicator.askGet(
                 askReplyTo -> new Replicator.Get<>(dataKey(key), readLocal(), askReplyTo),
-                rsp -> new InternalGetResponse(key, replyTo, rsp));
+                rsp -> new InternalGetResponse(key, replyTo, rsp, uuid));
 
         return Behaviors.same();
     }
@@ -96,9 +96,9 @@ public class ReplicatedCache {
         if (msg.rsp instanceof Replicator.GetSuccess) {
             Option<String> valueOption = ((Replicator.GetSuccess<LWWMap<String, String>>) msg.rsp).get(dataKey(msg.key)).get(msg.key);
             Optional<String> valueOptional = Optional.ofNullable(valueOption.isDefined() ? valueOption.get() : null);
-            msg.replyTo.tell(new Cached(msg.key, valueOptional));
+            msg.replyTo.tell(new Cached(msg.key, valueOptional, msg.uuid));
         } else if (msg.rsp instanceof Replicator.NotFound) {
-            msg.replyTo.tell(new Cached(msg.key, Optional.empty()));
+            msg.replyTo.tell(new Cached(msg.key, Optional.empty(), msg.uuid));
         }
         return Behaviors.same();
     }

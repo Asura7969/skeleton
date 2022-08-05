@@ -4,6 +4,7 @@ import akka.actor.typed.Behavior;
 import akka.actor.typed.javadsl.Behaviors;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author asura7969
@@ -12,10 +13,12 @@ import java.util.Optional;
 public class Cached {
     public final String key;
     public final Optional<String> value;
+    public final String uuid;
 
-    public Cached(String key, Optional<String> value) {
+    public Cached(String key, Optional<String> value, String uuid) {
         this.key = key;
         this.value = value;
+        this.uuid = uuid;
     }
 
     @Override

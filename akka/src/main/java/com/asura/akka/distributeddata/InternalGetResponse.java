@@ -10,14 +10,17 @@ import akka.cluster.ddata.typed.javadsl.Replicator.GetResponse;
  */
 public class InternalGetResponse implements InternalCommand {
     public final String key;
+    public final String uuid;
     public final ActorRef<Cached> replyTo;
     public final GetResponse<LWWMap<String, String>> rsp;
 
     public InternalGetResponse(
-            String key, ActorRef<Cached> replyTo, GetResponse<LWWMap<String, String>> rsp
+            String key, ActorRef<Cached> replyTo, GetResponse<LWWMap<String, String>> rsp,
+            String uuid
     ) {
         this.key = key;
         this.replyTo = replyTo;
         this.rsp = rsp;
+        this.uuid = uuid;
     }
 }

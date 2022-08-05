@@ -2,19 +2,25 @@ package com.asura.akka;
 
 import akka.actor.ActorSystem;
 import akka.actor.typed.ActorRef;
+import akka.actor.typed.Behavior;
 import akka.actor.typed.Props;
 import akka.actor.typed.javadsl.Adapter;
+import akka.actor.typed.javadsl.Behaviors;
 import akka.cluster.typed.Cluster;
+import com.asura.akka.distributeddata.Cached;
 import com.asura.akka.distributeddata.Command;
+import com.asura.akka.distributeddata.ForwardActor;
 import com.asura.akka.distributeddata.ReplicatedCache;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import static com.asura.akka.SpringExtension.SPRING_EXTENSION_PROVIDER;
 
@@ -67,8 +73,15 @@ public class AppConfiguration {
     }
 
     @Bean("replicatedCache")
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public ActorRef<Command> replicatedCache(@Qualifier("actorSystem") ActorSystem system) {
         return Adapter.spawnAnonymous(system, ReplicatedCache.create(), Props.empty());
+    }
+
+    @Bean("forwardRef")
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+    public ActorRef<Cached> forwardRef(@Qualifier("actorSystem") ActorSystem system) {
+        return Adapter.spawnAnonymous(system, ForwardActor.create(), Props.empty());
     }
 
 
