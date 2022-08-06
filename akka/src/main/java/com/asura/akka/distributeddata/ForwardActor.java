@@ -1,10 +1,7 @@
 package com.asura.akka.distributeddata;
 
 import akka.actor.typed.Behavior;
-import akka.actor.typed.javadsl.AbstractBehavior;
-import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.javadsl.Behaviors;
-import akka.actor.typed.javadsl.Receive;
 import akka.japi.function.Function;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,33 +11,29 @@ import java.util.Optional;
 import java.util.concurrent.*;
 
 @Slf4j
-public class ForwardActor extends AbstractBehavior<Cached> {
+public class ForwardActor {
 
     private final static Map<String, BlockingDeque<Optional<String>>> inbox = new ConcurrentHashMap<>();
 
-    public ForwardActor(ActorContext<Cached> context) {
-        super(context);
+    public ForwardActor() {
     }
-
 
     public static Behavior<Cached> create() {
-        return Behaviors.setup(ForwardActor::new);
+        return Behaviors.setup(ctx -> new ForwardActor().createReceive());
     }
 
-    @Override
-    public Receive<Cached> createReceive() {
-        return newReceiveBuilder()
-                .onAnyMessage((Function<Cached, Behavior<Cached>>) msg ->
-                        Behaviors.receive((context, message) -> {
-                            try {
-                                log.info("ForwardActor 接收到msg key: {}", message.key);
-                                // todo: 不能插入null
-                                inbox.get(message.uuid).offerLast(message.value);
-                            } catch (NullPointerException npe) {
-                                // ignore
-                            }
-                            return Behaviors.same();
-                        }))
+    public Behavior<Cached> createReceive() {
+        return Behaviors
+                .receive(Cached.class)
+                .onAnyMessage((Function<Cached, Behavior<Cached>>) message -> {
+                    try {
+                        // note: 不能插入null
+                        inbox.get(message.uuid).offerLast(message.value);
+                    } catch (NullPointerException npe) {
+                        // ignore
+                    }
+                    return Behaviors.same();
+                })
                 .build();
     }
 

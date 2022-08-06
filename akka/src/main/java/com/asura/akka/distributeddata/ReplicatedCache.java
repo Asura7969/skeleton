@@ -100,10 +100,8 @@ public class ReplicatedCache {
         if (msg.rsp instanceof Replicator.GetSuccess) {
             Option<String> valueOption = ((Replicator.GetSuccess<LWWMap<String, String>>) msg.rsp).get(dataKey(msg.key)).get(msg.key);
             Optional<String> valueOptional = Optional.ofNullable(valueOption.isDefined() ? valueOption.get() : null);
-            log.info("回复信息 k:{}", msg.key);
             msg.replyTo.tell(new Cached(msg.key, valueOptional, msg.uuid));
         } else if (msg.rsp instanceof Replicator.NotFound) {
-            log.info("NotFound 回复信息 k:{}", msg.key);
             msg.replyTo.tell(new Cached(msg.key, Optional.empty(), msg.uuid));
         }
         return Behaviors.same();
