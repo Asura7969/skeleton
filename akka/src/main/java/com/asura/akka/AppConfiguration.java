@@ -47,10 +47,11 @@ public class AppConfiguration {
             seedNodes.append(node);
         }
         return String.format(
-                "akka.actor.provider=\"cluster\"\n" +
+                "\nakka.actor.provider=\"cluster\"\n" +
                 "akka.remote.artery.canonical.hostname=\"127.0.0.1\"\n" +
                 "akka.remote.artery.canonical.port=%s\n" +
                 "%s" +
+                "seed-node-timeout=30s\n" +
                 "akka.cluster.downing-provider-class=\"akka.cluster.sbr.SplitBrainResolverProvider\"\n",
                 akkaConfig.getRemote_port(),
                 seedNodes);

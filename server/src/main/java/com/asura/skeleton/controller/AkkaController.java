@@ -1,19 +1,13 @@
 package com.asura.skeleton.controller;
 
-import akka.actor.ActorSystem;
-import akka.actor.Props;
-import akka.actor.typed.ActorRef;
-import akka.actor.typed.javadsl.Adapter;
 import com.asura.akka.distributeddata.*;
 import com.asura.common.annotation.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 
 /**
@@ -25,34 +19,26 @@ import java.time.Duration;
 @RequestMapping("/akka")
 public class AkkaController {
 
-//    @Autowired
-//    @Qualifier(value = "actorSystem")
-//    private ActorSystem system;
-//    @Autowired
-//    @Qualifier(value = "replicatedCache")
-//    private ActorRef<Command> replicatedCache;
-
     @Autowired
     private AkkaMapManager akkaMapManager;
 
 
-    @PostMapping(value = "/put")
-    public void put() {
-        akkaMapManager.put(new PutInCache("key1", "A"));
+    @GetMapping(value = "/put/{key}/{value}")
+    public void put(@PathVariable("key") String key,
+                    @PathVariable("value") String value) {
+        akkaMapManager.put(new PutInCache(key, value));
     }
 
-    @GetMapping(value = "/get")
-    public void get() {
-        try {
-            akkaMapManager.get("key1", op -> {
-                System.out.println(op.get());
-            }, Duration.ofSeconds(10));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-//        final ActorRef<Cached> proxy = Adapter.spawnAnonymous(system, Cached.createBehavior());
-//        replicatedCache.tell(new GetFromCache("key1", proxy, ""));
+    @GetMapping(value = "/get/{key}")
+    public void get(@PathVariable("key") String key) {
+        long start = System.currentTimeMillis();
+        CompletableFuture<Optional<String>> future = akkaMapManager.asyncGet(key, Duration.ofSeconds(10));
+        future.whenComplete((s, throwable) -> {
+            long took = System.currentTimeMillis() - start;
+            System.out.println("get cache took: " + took + " ms");
+            System.out.println(s.get());
+        });
+        future.join();
     }
 
 }

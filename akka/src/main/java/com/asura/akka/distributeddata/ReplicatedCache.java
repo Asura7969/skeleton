@@ -11,6 +11,7 @@ import akka.cluster.ddata.SelfUniqueAddress;
 import akka.cluster.ddata.typed.javadsl.DistributedData;
 import akka.cluster.ddata.typed.javadsl.Replicator;
 import akka.cluster.ddata.typed.javadsl.ReplicatorMessageAdapter;
+import lombok.extern.slf4j.Slf4j;
 import scala.Option;
 
 import java.util.Optional;
@@ -22,6 +23,7 @@ import static akka.cluster.ddata.typed.javadsl.Replicator.writeLocal;
  * @author asura7969
  * @create 2022-07-24-22:40
  */
+@Slf4j
 public class ReplicatedCache {
 
     private final ReplicatorMessageAdapter<Command, LWWMap<String, String>> replicator;
@@ -36,10 +38,12 @@ public class ReplicatedCache {
     }
 
     public static Behavior<Command> create() {
-        return Behaviors.setup(context ->
+        Behavior<Command> setup = Behaviors.setup(context ->
                 DistributedData.withReplicatorMessageAdapter(
                         (ReplicatorMessageAdapter<Command, LWWMap<String, String>> replicator) ->
                                 new ReplicatedCache(context, replicator).createBehavior()));
+        log.info("Init ReplicatedCache successfully!");
+        return setup;
     }
 
 
@@ -96,8 +100,10 @@ public class ReplicatedCache {
         if (msg.rsp instanceof Replicator.GetSuccess) {
             Option<String> valueOption = ((Replicator.GetSuccess<LWWMap<String, String>>) msg.rsp).get(dataKey(msg.key)).get(msg.key);
             Optional<String> valueOptional = Optional.ofNullable(valueOption.isDefined() ? valueOption.get() : null);
+            log.info("回复信息 k:{}", msg.key);
             msg.replyTo.tell(new Cached(msg.key, valueOptional, msg.uuid));
         } else if (msg.rsp instanceof Replicator.NotFound) {
+            log.info("NotFound 回复信息 k:{}", msg.key);
             msg.replyTo.tell(new Cached(msg.key, Optional.empty(), msg.uuid));
         }
         return Behaviors.same();
