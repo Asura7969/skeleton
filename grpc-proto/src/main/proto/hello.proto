@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package com.asura.grpc;
+option java_multiple_files = true;
+//option java_package = "com.asura.grpcserver.protobuf";
+//option java_outer_classname = "HelloGrpcService";
+//option go_package = "./hello_grpc";
+
+service HelloService {
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc SayHelloOutStream (HelloRequest) returns (stream HelloReply) {}
+  rpc SayHelloInStream (stream HelloRequest) returns (HelloReplyList) {}
+  rpc SayHelloBothStream (stream HelloRequest) returns (stream HelloReply) {}
+}
+
+message HelloRequest {
+  string name = 1;
+  map<string, string> tags = 2;
+}
+
+message HelloReply {
+  string message = 1;
+}
+
+message HelloReplyList {
+  repeated HelloReply reply = 1;
+}

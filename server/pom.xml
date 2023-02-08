@@ -21,30 +21,42 @@
         <dependency>
             <groupId>com.asura</groupId>
             <artifactId>common</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.asura</groupId>
             <artifactId>open-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.asura</groupId>
             <artifactId>dao</artifactId>
+            <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.asura</groupId>
-            <artifactId>akka</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.asura</groupId>-->
+<!--            <artifactId>akka</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.asura</groupId>
             <artifactId>cache</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.asura</groupId>
+            <artifactId>grpc-server</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->
@@ -53,18 +65,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -77,14 +82,12 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>7.5.2</version>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <version>7.5.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
