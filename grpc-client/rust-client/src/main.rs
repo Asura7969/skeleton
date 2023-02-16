@@ -8,6 +8,7 @@ use tonic::transport::Endpoint;
 
 
 mod proto {
+    // 需要与proto文件中 'package com.asura.grpc;' 一致
     tonic::include_proto!("com.asura.grpc");
 }
 
